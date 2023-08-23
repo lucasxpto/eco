@@ -6,7 +6,7 @@
                     <div class="col mb-4">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="{{ produto.imagem.url }}" alt="produto {{ produto.nome }}" />
+                            <img class="card-img-top" src="{% if produto.imagem %}{{ produto.imagem.url }} {% else %} {% static 'assets/noitem.jfif' %} {% endif %}" alt="produto {{ produto.nome }}" />
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">

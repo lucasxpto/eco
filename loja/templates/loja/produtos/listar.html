@@ -7,7 +7,7 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="{{ p.imagem.url }}" alt="produto {{ p.nome }}" />
+                            <img class="card-img-top" src="{% if p.imagem %}{{ p.imagem.url }} {% else %} {% static 'assets/noitem.jfif' %} {% endif %}" alt="produto {{ p.nome }}" />
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
