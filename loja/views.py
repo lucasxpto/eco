@@ -1,6 +1,15 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 
 from loja.models import Categoria, Produto
+
+
+class IndexView(TemplateView):
+    template_name = 'loja/index.html'
+
+    def get_context_data(self, **kwargs):
+        cont = super().get_context_data(**kwargs)
+        cont['categorias'] = Categoria.objects.all()
+        return cont
 
 
 class ProdutoListView(ListView):
@@ -15,14 +24,26 @@ class ProdutoListView(ListView):
         categorias = Categoria.objects.all()
         if self.kwargs and self.kwargs['categ_slug']:
             slug = self.kwargs['categ_slug']
-            categoria = Categoria.objects.filter(slug=slug)
-            self.queryset = self.queryset.filter(categoria=categoria)
+            categoria = Categoria.objects.get(slug=slug)
+            # self.queryset = self.queryset.filter(categoria=categoria)
         contexto['categoria'] = categoria
         contexto['categorias'] = categorias
-        print(contexto)
         return contexto
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if self.kwargs and self.kwargs['categ_slug']:
+            slug = self.kwargs['categ_slug']
+            categoria = Categoria.objects.get(slug=slug)
+            return qs.filter(categoria=categoria)
+        return qs
 
 
 class ProdutoDetailView(DetailView):
     template_name = 'loja/produtos/detalhe.html'
     model = Produto
+
+    def get_context_data(self, **kwargs):
+        cont = super().get_context_data(**kwargs)
+        cont['categorias'] = Categoria.objects.all()
+        return cont
