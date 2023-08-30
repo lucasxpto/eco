@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, TemplateView
 
 from loja.models import Categoria, Produto
+from carrinho.forms import CarrinhoAddProdutoForm
 
 
 class IndexView(TemplateView):
@@ -46,4 +47,6 @@ class ProdutoDetailView(DetailView):
     def get_context_data(self, **kwargs):
         cont = super().get_context_data(**kwargs)
         cont['categorias'] = Categoria.objects.all()
+        formaddcar = CarrinhoAddProdutoForm()
+        cont['formadd'] = formaddcar
         return cont
