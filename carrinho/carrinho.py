@@ -47,7 +47,7 @@ class Carrinho(object):
         """
         idprod = str(produto.id)
         if idprod in self.carrinho:
-            del  self.carrinho[idprod]
+            del self.carrinho[idprod]
             self._salvar()
 
     def __iter__(self):
