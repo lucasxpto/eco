@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'bootstrap4',
+
     'loja',
     'carrinho',
     'pedidos',
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['loja/templates', 'carrinho/templates'],
+        'DIRS': ['loja/templates', 'carrinho/templates', 'pedidos/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
