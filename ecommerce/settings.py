@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'loja',
     'carrinho',
+    'pedidos',
 ]
 
 MIDDLEWARE = [
@@ -65,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'carrinho.context_processors.carrinho',
             ],
         },
     },
@@ -81,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ecommerce',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'alunoifro',
         'PORT': '3306',
         'HOST': 'localhost',
     }

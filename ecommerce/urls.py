@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('loja.urls')),
     path('carrinho/', include('carrinho.urls')),
+    path('pedido/', include('pedidos.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
