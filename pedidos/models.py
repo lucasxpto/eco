@@ -22,7 +22,7 @@ class Pedido(models.Model):
         return f'Pedido {self.id}'
 
     def get_total(self):
-        return sum(item.get_custo() for item in self.items.all())
+        return sum(item.get_custo() for item in self.itens_pedido.all())
 
 
 class ItemPedido(models.Model):
