@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'bootstrap4',
+    'django_celery_beat',
+    'django_celery_results',
 
     'loja',
     'carrinho',
@@ -159,3 +161,14 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_USE_TLS = env('EMAIL_USE_TLS')
 # EMAIL_USE_SSL = env('EMAIL_USE_SSL')
+
+
+
+# save Celery task results in Django's database
+CELERY_RESULT_BACKEND = "django-db"
+
+# This configures Redis as the datastore between Django + Celery
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+
+# this allows you to schedule items in the Django admin.
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
