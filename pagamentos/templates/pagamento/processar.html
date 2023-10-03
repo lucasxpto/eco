@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block conteudo %}
+  <div class="row gx-3 gx-lg-1 row-cols-2 row-cols-md-3 row-cols-xl-2 justify-content-center">
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body p-4">
+          <div>
+            <h2 class="mb-4">Pagamento com Cartão de Crédito</h2>
+            <form id="payment" method="post">
+              <div class="mb-4">
+                <label class="form-label" for="card-number">Número do Cartão</label>
+                <div class="form-control" id="card-number" class="field"></div>
+              </div>
+              <div class="mb-4">
+                <label class="form-label" for="cvv">CVV</label>
+                <div class="form-control" id="cvv" class="field"></div>
+              </div>
+              <div class="mb-4">
+                <label class="form-label" for="expiration-date">Vencimento</label>
+                <div class="form-control" id="expiration-date" class="field"></div>
+              </div>
+              <input type="hidden" id="nonce" name="payment_method_nonce" value="" />
+              {% csrf_token %}
+              <input type="submit" class="btn btn-primary" disabled value="Pagar" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block scripts %}
+  <script src="https://js.braintreegateway.com/web/3.44.2/js/client.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.44.2/js/hosted-fields.min.js"></script>
+  <script>
+    var form = document.querySelector('#payment')
+    var submit = document.querySelector('input[type="submit"]')
+    
+    braintree.client.create(
+      {
+        authorization: '{{ braintree_client_token }}'
+      },
+      function (clientErr, clientInstance) {
+        if (clientErr) {
+          console.error(clientErr)
+          return
+        }
+    
+        // This example shows Hosted Fields, but you can also use this
+        // client instance to create additional components here, such as
+        // PayPal or Data Collector.
+    
+        braintree.hostedFields.create(
+          {
+            client: clientInstance,
+            styles: {
+              input: {
+                'font-size': '1.5em'
+              },
+              'input.invalid': {
+                color: 'red'
+              },
+              'input.valid': {
+                color: 'green'
+              }
+            },
+            fields: {
+              number: {
+                selector: '#card-number',
+                placeholder: '4111 1111 1111 1111'
+              },
+              cvv: {
+                selector: '#cvv',
+                placeholder: '123'
+              },
+              expirationDate: {
+                selector: '#expiration-date',
+                placeholder: '12/2028'
+              }
+            }
+          },
+          function (hostedFieldsErr, hostedFieldsInstance) {
+            if (hostedFieldsErr) {
+              console.error(hostedFieldsErr)
+              return
+            }
+    
+            submit.removeAttribute('disabled')
+    
+            form.addEventListener(
+              'submit',
+              function (event) {
+                event.preventDefault()
+    
+                hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+                  if (tokenizeErr) {
+                    console.error(tokenizeErr)
+                    return
+                  }
+    
+                  // If this was a real integration, this is where you would
+                  // send the nonce to your server.
+                  // console.log('Got a nonce: ' + payload.nonce);
+                  document.getElementById('nonce').value = payload.nonce
+                  document.getElementById('payment').submit()
+                })
+              },
+              false
+            )
+          }
+        )
+      }
+    )
+  </script>
+{% endblock %}
