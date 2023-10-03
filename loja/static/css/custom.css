@@ -1,0 +1,5 @@
+#card-number,
+#cvv,
+#expiration-date {
+  height: 40px;
+}

@@ -1,0 +1,24 @@
+Olá {{ pedido.nome }},
+
+Olá {{ pedido.nome }},
+Seu pagamento foi confirmado com sucesso!
+Detalhes do pagamento:
+
+Número do Pedido: {{ pedido.id}}
+Data do Pedido: {{ pedido.criado}}
+Valor Total: R${{ pedido.get_total }}
+
+Itens do Pedido:
+{% for item in pedido.itens_pedido.all %}
+    {% with produto=item.produto %}
+Produto: {{ produto.nome }}
+Quantidade: {{ item.quantidade }}
+Preço Unitário: R${{ item.preco }}
+Subtotal: R${{ item.get_custo }}
+    {% endwith %}
+{% endfor %}
+
+Seu pagamento foi processado com sucesso e seus itens estão sendo preparados para envio. Agradecemos por fazer compras conosco!
+
+Atenciosamente,
+Equipe Loja IFRO
